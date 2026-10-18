@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #000;
+    }
+  </style>
+</head>
+<body>
+<!-- STITCH_THREEJS_START:ANIMATION_6 class="fixed inset-0 w-full h-full bg-transparent" -->
+<div class="fixed inset-0 w-full h-full bg-transparent" style="display:block;">
+<script src="https://ajax.googleapis.com/ajax/libs/threejs/r125/three.min.js"></script>
+<div id="threejs-container-ANIMATION_6" style="width:100%;height:100%"></div>
+<script>
+(function() {
+  const container = document.getElementById('threejs-container-ANIMATION_6');
+  const devicePixelRatio = window.devicePixelRatio || 1;
+  // Cinematic 3D Digital Marketing Universe for DEEPVIXO
+// Realistic 3D Globe with illuminated digital landmass grid, atmosphere glow, orbiting concentric rings,
+// floating 3D marketing badges (SEO, Web, Google Ads, Meta Ads, Analytics, Social), and interactive mouse parallax.
+
+const container = document.getElementById('threejs-container') || document.body;
+const width = container.clientWidth || window.innerWidth || 800;
+const height = container.clientHeight || window.innerHeight || 600;
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(42, width / height, 0.1, 1000);
+camera.position.set(0, 1.2, 18);
+
+const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: "high-performance" });
+renderer.setSize(width, height);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.35;
+container.appendChild(renderer.domElement);
+
+// Lighting setup: cinematic deep space with electric cyan and royal blue rim lights
+const ambientLight = new THREE.AmbientLight(0x0c1e3d, 1.6);
+scene.add(ambientLight);
+
+const mainKeyLight = new THREE.DirectionalLight(0x38bdf8, 3.2);
+mainKeyLight.position.set(12, 14, 16);
+scene.add(mainKeyLight);
+
+const violetRimLight = new THREE.DirectionalLight(0x818cf8, 2.8);
+violetRimLight.position.set(-14, -8, -10);
+scene.add(violetRimLight);
+
+const coreGlowLight = new THREE.PointLight(0x00f0ff, 4.5, 30);
+coreGlowLight.position.set(0, 0, 3);
+scene.add(coreGlowLight);
+
+const universeGroup = new THREE.Group();
+scene.add(universeGroup);
+
+// 1. REALISTIC 3D PLANET / DIGITAL MARKETING GLOBE
+const globeRadius = 4.4;
+const globeCoreGeo = new THREE.SphereGeometry(globeRadius, 64, 64);
+const globeCoreMat = new THREE.MeshPhongMaterial({
+  color: 0x07152f,
+  emissive: 0x051024,
+  specular: 0x2563eb,
+  shininess: 45,
+  flatShading: false
+});
+const globeCore = new THREE.Mesh(globeCoreGeo, globeCoreMat);
+universeGroup.add(globeCore);
+
+// Globe Digital Wireframe / Lat-Long Grid with depth
+const wireframeGeo = new THREE.WireframeGeometry(new THREE.SphereGeometry(globeRadius * 1.008, 36, 36));
+const wireframeMat = new THREE.LineBasicMaterial({
+  color: 0x1d4ed8,
+  transparent: true,
+  opacity: 0.28
+});
+const wireframeMesh = new THREE.LineSegments(wireframeGeo, wireframeMat);
+globeCore.add(wireframeMesh);
+
+// Glowing Digital Data Points on Globe Surface (Latitude/Longitude Nodes)
+const dotCount = 420;
+const dotGeo = new THREE.BufferGeometry();
+const dotPositions = new Float32Array(dotCount * 3);
+const dotColors = new Float32Array(dotCount * 3);
+
+for (let i = 0; i < dotCount; i++) {
+  // Fibonacci sphere distribution for uniform global landmass/cluster dots
+  const phi = Math.acos(-1 + (2 * i) / dotCount);
+  const theta = Math.sqrt(dotCount * Math.PI) * phi;
+  const r = globeRadius * 1.025;
+
+  const x = r * Math.cos(theta) * Math.sin(phi);
+  const y = r * Math.sin(theta) * Math.sin(phi);
+  const z = r * Math.cos(phi);
+
+  dotPositions[i * 3] = x;
+  dotPositions[i * 3 + 1] = y;
+  dotPositions[i * 3 + 2] = z;
+
+  // Dual-tone blue/cyan palette
+  if (Math.random() > 0.4) {
+    dotColors[i * 3] = 0.22;
+    dotColors[i * 3 + 1] = 0.74;
+    dotColors[i * 3 + 2] = 0.98;
+  } else {
+    dotColors[i * 3] = 0.08;
+    dotColors[i * 3 + 1] = 0.45;
+    dotColors[i * 3 + 2] = 0.95;
+  }
+}
+
+dotGeo.setAttribute('position', new THREE.BufferAttribute(dotPositions, 3));
+dotGeo.setAttribute('color', new THREE.BufferAttribute(dotColors, 3));
+
+const dotMat = new THREE.PointsMaterial({
+  size: 0.18,
+  vertexColors: true,
+  transparent: true,
+  opacity: 0.9,
+  blending: THREE.AdditiveBlending
+});
+const globeDots = new THREE.Points(dotGeo, dotMat);
+globeCore.add(globeDots);
+
+// Atmosphere Haze Layer
+const atmoGeo = new THREE.SphereGeometry(globeRadius * 1.065, 48, 48);
+const atmoMat = new THREE.MeshPhongMaterial({
+  color: 0x38bdf8,
+  transparent: true,
+  opacity: 0.14,
+  side: THREE.BackSide,
+  blending: THREE.AdditiveBlending
+});
+const atmosphere = new THREE.Mesh(atmoGeo, atmoMat);
+globeCore.add(atmosphere);
+
+// 2. ELEGANT ORBITING RINGS WITH GRADIENT / GLOW
+const ringGroup = new THREE.Group();
+universeGroup.add(ringGroup);
+
+function createOrbitRing(innerR, outerR, tiltX, tiltZ, ringColor, opacityVal) {
+  const rGeo = new THREE.RingGeometry(innerR, outerR, 96);
+  const rMat = new THREE.MeshBasicMaterial({
+    color: ringColor,
+    side: THREE.DoubleSide,
+    transparent: true,
+    opacity: opacityVal,
+    blending: THREE.AdditiveBlending
+  });
+  const ring = new THREE.Mesh(rGeo, rMat);
+  ring.rotation.x = tiltX;
+  ring.rotation.z = tiltZ;
+  return ring;
+}
+
+const ring1 = createOrbitRing(6.0, 6.35, Math.PI / 2.6, 0.4, 0x0284c7, 0.55);
+const ring2 = createOrbitRing(7.2, 7.35, Math.PI / 2.3, -0.3, 0x60a5fa, 0.45);
+const ring3 = createOrbitRing(8.6, 8.78, Math.PI / 3.0, 0.7, 0x818cf8, 0.35);
+
+ringGroup.add(ring1);
+ringGroup.add(ring2);
+ringGroup.add(ring3);
+
+// 3. FLOATING 3D MARKETING NODES & BADGES
+// Representation: SEO, Website Design, Google Ads, Meta Ads, Analytics, Social
+const badgesData = [
+  { label: 'SEO', color: 0x38bdf8, angle: 0.2, orbitRadius: 6.8, speed: 0.7, height: 1.2 },
+  { label: 'ADS', color: 0x60a5fa, angle: 1.3, orbitRadius: 7.6, speed: 0.55, height: -1.6 },
+  { label: 'META', color: 0x818cf8, angle: 2.4, orbitRadius: 6.2, speed: 0.65, height: 2.1 },
+  { label: 'WEB', color: 0x0ea5e9, angle: 3.6, orbitRadius: 7.9, speed: 0.6, height: -0.8 },
+  { label: 'DATA', color: 0x00f0ff, angle: 4.7, orbitRadius: 6.5, speed: 0.75, height: 1.8 },
+  { label: 'CONV', color: 0x93c5fd, angle: 5.6, orbitRadius: 7.2, speed: 0.5, height: -2.0 }
+];
+
+const badgeMeshes = [];
+
+badgesData.forEach((b) => {
+  const bGroup = new THREE.Group();
+
+  // Glass/Metallic Badge Housing
+  const plateGeo = new THREE.CylinderGeometry(0.72, 0.72, 0.18, 24);
+  const plateMat = new THREE.MeshPhongMaterial({
+    color: 0x0c2554,
+    emissive: 0x05132d,
+    specular: b.color,
+    shininess: 90
+  });
+  const plate = new THREE.Mesh(plateGeo, plateMat);
+  plate.rotation.x = Math.PI / 2;
+  bGroup.add(plate);
+
+  // Outer Neon Halo Ring
+  const haloGeo = new THREE.TorusGeometry(0.76, 0.04, 16, 32);
+  const haloMat = new THREE.MeshBasicMaterial({
+    color: b.color,
+    transparent: true,
+    opacity: 0.85
+  });
+  const halo = new THREE.Mesh(haloGeo, haloMat);
+  bGroup.add(halo);
+
+  // Central glowing core crystal
+  const coreGemGeo = new THREE.OctahedronGeometry(0.38, 0);
+  const coreGemMat = new THREE.MeshPhongMaterial({
+    color: b.color,
+    emissive: b.color,
+    emissiveIntensity: 0.6,
+    shininess: 100
+  });
+  const coreGem = new THREE.Mesh(coreGemGeo, coreGemMat);
+  bGroup.add(coreGem);
+
+  // Dynamic beam connection line to globe
+  const beamGeo = new THREE.BufferGeometry().setFromPoints([
+    new THREE.Vector3(0, 0, 0),
+    new THREE.Vector3(0, 0, 0)
+  ]);
+  const beamMat = new THREE.LineBasicMaterial({
+    color: b.color,
+    transparent: true,
+    opacity: 0.4
+  });
+  const beamLine = new THREE.Line(beamGeo, beamMat);
+  scene.add(beamLine);
+
+  universeGroup.add(bGroup);
+  badgeMeshes.push({ group: bGroup, gem: coreGem, beam: beamLine, data: b });
+});
+
+// 4. CELESTIAL BACKGROUND & LUMINOUS PARTICLE CONSTELLATION
+const particleCount = 450;
+const particleGeo = new THREE.BufferGeometry();
+const particlePos = new Float32Array(particleCount * 3);
+const particleRates = [];
+
+for (let i = 0; i < particleCount * 3; i += 3) {
+  particlePos[i] = (Math.random() - 0.5) * 48;
+  particlePos[i + 1] = (Math.random() - 0.5) * 36;
+  particlePos[i + 2] = (Math.random() - 0.5) * 28;
+  particleRates.push({
+    dy: (Math.random() - 0.5) * 0.008,
+    dx: (Math.random() - 0.5) * 0.006,
+    pulseSpeed: Math.random() * 2 + 1
+  });
+}
+
+particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePos, 3));
+const particleMat = new THREE.PointsMaterial({
+  color: 0x93c5fd,
+  size: 0.16,
+  transparent: true,
+  opacity: 0.7,
+  blending: THREE.AdditiveBlending
+});
+const stars = new THREE.Points(particleGeo, particleMat);
+scene.add(stars);
+
+// Mouse & Parallax tracking
+let mouseX = 0;
+let mouseY = 0;
+let targetX = 0;
+let targetY = 0;
+
+window.addEventListener('mousemove', (e) => {
+  mouseX = (e.clientX - window.innerWidth / 2) * 0.0006;
+  mouseY = (e.clientY - window.innerHeight / 2) * 0.0006;
+});
+
+window.addEventListener('resize', () => {
+  const newW = container.clientWidth || window.innerWidth;
+  const newH = container.clientHeight || window.innerHeight;
+  camera.aspect = newW / newH;
+  camera.updateProjectionMatrix();
+  renderer.setSize(newW, newH);
+});
+
+// Animation Loop
+const clock = new THREE.Clock();
+
+function animate() {
+  requestAnimationFrame(animate);
+  const time = clock.getElapsedTime();
+
+  targetX += (mouseX - targetX) * 0.05;
+  targetY += (mouseY - targetY) * 0.05;
+
+  // Globe continuous rotation & tilt
+  globeCore.rotation.y = time * 0.15;
+  globeCore.rotation.x = 0.18 + Math.sin(time * 0.3) * 0.05;
+
+  // Rings gentle oscillation & counter rotation
+  ring1.rotation.z = 0.4 + time * 0.06;
+  ring2.rotation.z = -0.3 - time * 0.04;
+  ring3.rotation.z = 0.7 + time * 0.08;
+
+  // Camera subtle mouse parallax and levitation
+  universeGroup.rotation.y = targetX * 1.8;
+  universeGroup.rotation.x = -targetY * 1.2;
+  universeGroup.position.y = Math.sin(time * 0.8) * 0.22;
+
+  // Update orbiting badges
+  badgeMeshes.forEach((item, idx) => {
+    const d = item.data;
+    const currentAngle = d.angle + time * d.speed * 0.3;
+    const x = Math.cos(currentAngle) * d.orbitRadius;
+    const z = Math.sin(currentAngle) * (d.orbitRadius * 0.75);
+    const y = d.height + Math.sin(time * 1.4 + idx) * 0.35;
+
+    item.group.position.set(x, y, z);
+    item.group.lookAt(camera.position);
+
+    item.gem.rotation.y = time * 1.5;
+    item.gem.rotation.x = time * 1.2;
+
+    // Laser connection line from badge to globe center
+    const globeSurfacePoint = new THREE.Vector3(x, y, z).normalize().multiplyScalar(globeRadius);
+    const worldBadgePos = new THREE.Vector3();
+    item.group.getWorldPosition(worldBadgePos);
+
+    const positions = item.beam.geometry.attributes.position.array;
+    positions[0] = worldBadgePos.x;
+    positions[1] = worldBadgePos.y;
+    positions[2] = worldBadgePos.z;
+    positions[3] = globeSurfacePoint.x;
+    positions[4] = globeSurfacePoint.y;
+    positions[5] = globeSurfacePoint.z;
+    item.beam.geometry.attributes.position.needsUpdate = true;
+  });
+
+  // Particle drift
+  const pArray = stars.geometry.attributes.position.array;
+  for (let i = 0; i < particleCount; i++) {
+    const rate = particleRates[i];
+    pArray[i * 3 + 1] += rate.dy;
+    pArray[i * 3] += rate.dx;
+    if (pArray[i * 3 + 1] > 18) pArray[i * 3 + 1] = -18;
+    if (pArray[i * 3 + 1] < -18) pArray[i * 3 + 1] = 18;
+  }
+  stars.geometry.attributes.position.needsUpdate = true;
+  stars.rotation.y = time * 0.015;
+
+  renderer.render(scene, camera);
+}
+
+animate();
+
+})();
+</script>
+</div>
+<!-- STITCH_THREEJS_END:ANIMATION_6 -->
+</body>
+</html>
